@@ -15,6 +15,7 @@ const authRoute = require("./routes/auth");
 const jobsRoute = require("./routes/jobs");
 const authenticationMiddleware = require("./middleware/authentication");
 
+app.set("trust proxy", 1);
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // for 15 minutes
