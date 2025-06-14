@@ -5,9 +5,6 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     msg: err.msg || "Something went wrong, please try again later",
   };
-  // if (err instanceof CustomAPIError) {
-  //   return res.status(err.statusCode).json({ msg: err.message });
-  // }
   if (err.name === "ValidationError") {
     customError.msg = Object.values(err.errors)
       .map((item) => item.message)
@@ -25,7 +22,6 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     customError.statusCode = 404;
   }
   console.log(err);
-  //return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
   return res.status(customError.statusCode).json({ msg: customError.msg });
 };
 
