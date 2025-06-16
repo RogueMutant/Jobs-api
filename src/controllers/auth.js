@@ -23,11 +23,21 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("Invalid credentials");
   }
   const token = user.createJwt();
+  if (!token) {
+    throw new BadRequestError("Failed to create token");
+  }
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+  });
+
   res.status(StatusCodes.OK).json({
     user: {
       email: user.email,
     },
-    token,
+    msg: "User logged in successfully",
   });
 };
 

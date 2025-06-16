@@ -11,6 +11,7 @@ const connectDB = require("./db/connect");
 const authRoute = require("./routes/auth");
 const jobsRoute = require("./routes/jobs");
 const authenticationMiddleware = require("./middleware/authentication");
+const cookieParser = require("cookie-parser");
 
 app.set("trust proxy", 1);
 app.use(
@@ -20,6 +21,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet());
 app.use(cors());
 
