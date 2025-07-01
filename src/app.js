@@ -4,6 +4,8 @@ const app = express();
 const helmet = require("helmet");
 const cors = require("cors");
 const rateLimiter = require("express-rate-limit");
+const swaggerUI = require("swagger-ui-express");
+const swaggerSpec = require("./swagger");
 
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -24,7 +26,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use(cors());
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
+app.get("/", (req, res) => {
+  res.send('<h1>Job API</h1><a href="/api/v1/auth">Login/Register</a>');
+});
 // routes
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/jobs", authenticationMiddleware, jobsRoute);
@@ -33,10 +39,6 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
-
-app.get("/", (req, res) => {
-  res.send('<h1>Job API</h1><a href="/api/v1/auth">Login/Register</a>');
-});
 
 const start = async () => {
   try {
