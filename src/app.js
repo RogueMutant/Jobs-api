@@ -34,6 +34,10 @@ app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
 
+app.get("/", (req, res) => {
+  res.send('<h1>Job API</h1><a href="/api/v1/auth">Login/Register</a>');
+});
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
